@@ -17,7 +17,7 @@ from util import reorient, reset_vars
 # TODO: Replace the string with your user ID
 user_id = "team123"
 # TODO: list the class labels that you collected data for in the order of label_index (defined in collect-labelled-data.py)
-class_names = ["sitting", "walking", "turning", "jumping"]  # ...
+class_names = ["falling", "jumping", "sitting", "standing","turning","walking"]  # ...
 
 count = 0
 
