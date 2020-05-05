@@ -112,35 +112,74 @@ def extract_features(window):
     x = []
     feature_names = []
 
-    x.append(_compute_mean_features(window))
-    feature_names.append("x_mean")
-    feature_names.append("y_mean")
-    feature_names.append("z_mean")
+    #accelerometer features
+    x.append(_compute_mean_features(window[:,0:3]))
+    
+    feature_names.append("x_mean_accel")
+    feature_names.append("y_mean_accel")
+    feature_names.append("z_mean_accel")
     
     # convert the list of features to a single 1-dimensional vector
     feature_vector = np.concatenate(x, axis=0)
     
     #call functions to compute other features. Append the features to x and the names of these features to feature_names
 
-    max_val = _compute_max_magnitude_features(window)
-    feature_names.append("max_value")
-    num_peaks = _compute_peak_features(window)
-    feature_names.append("num_of_peaks")
-    entropy = _compute_entropy_features(window)
-    feature_names.append("entropy")
+    max_val_accel = _compute_max_magnitude_features(window[:,0:3])
+    feature_names.append("max_value_accel")
+    num_peaks_accel = _compute_peak_features(window[:,0:3])
+    feature_names.append("num_of_peaks_accel")
+    entropy_accel = _compute_entropy_features(window[:,0:3])
+    feature_names.append("entropy_accel")
     
-    num_peaks_fft = _compute_n_peak_freq_features(window)
-    peak_fft = _compute_peak_freq_features(window)
-    stdev = _compute_std_features(window)
-    feature_names.append("num_of_peaks_fft")
-    feature_names.append("peak_freq_fft")
-    feature_names.append("stdev")
+    num_peaks_fft_accel = _compute_n_peak_freq_features(window[:,0:3])
+    peak_fft_accel = _compute_peak_freq_features(window[:,0:3])
+    stdev_accel = _compute_std_features(window[:,0:3])
+    feature_names.append("num_of_peaks_fft_accel")
+    feature_names.append("peak_freq_fft_accel")
+    feature_names.append("stdev_accel")
     
-    feature_vector = np.append(feature_vector, max_val)
-    feature_vector = np.append(feature_vector, num_peaks)
-    feature_vector = np.append(feature_vector, entropy)
-    feature_vector = np.append(feature_vector, num_peaks_fft)
-    feature_vector = np.append(feature_vector, peak_fft)
-    feature_vector = np.append(feature_vector, stdev)
+    feature_vector = np.append(feature_vector, max_val_accel)
+    feature_vector = np.append(feature_vector, num_peaks_accel)
+    feature_vector = np.append(feature_vector, entropy_accel)
+    feature_vector = np.append(feature_vector, num_peaks_fft_accel)
+    feature_vector = np.append(feature_vector, peak_fft_accel)
+    feature_vector = np.append(feature_vector, stdev_accel)
     
-    return feature_names, feature_vector
+    #gyrometer features
+    x1 = []
+    feature_names1 = []
+    x1.append(_compute_mean_features(window[:,3:6]))
+    
+    feature_names1.append("x_mean_gyro")
+    feature_names1.append("y_mean_gyro")
+    feature_names1.append("z_mean_gyro")
+    
+    # convert the list of features to a single 1-dimensional vector
+    feature_vector1 = np.concatenate(x1, axis=0)
+    
+    #call functions to compute other features. Append the features to x and the names of these features to feature_names
+
+    max_val_gyro = _compute_max_magnitude_features(window[:,3:6])
+    feature_names1.append("max_value_gyro")
+    num_peaks_gyro = _compute_peak_features(window[:,3:6])
+    feature_names1.append("num_of_peaks_gyro")
+    entropy_gyro = _compute_entropy_features(window[:,3:6])
+    feature_names1.append("entropy_gyro")
+    
+    num_peaks_fft_gyro = _compute_n_peak_freq_features(window[:,3:6])
+    peak_fft_gyro = _compute_peak_freq_features(window[:,3:6])
+    stdev_gyro = _compute_std_features(window[:,3:6])
+    feature_names1.append("num_of_peaks_fft_gyro")
+    feature_names1.append("peak_freq_fft_gyro")
+    feature_names1.append("stdev_gyro")
+    
+    feature_vector1 = np.append(feature_vector1, max_val_gyro)
+    feature_vector1 = np.append(feature_vector1, num_peaks_gyro)
+    feature_vector1 = np.append(feature_vector1, entropy_gyro)
+    feature_vector1 = np.append(feature_vector1, num_peaks_fft_gyro)
+    feature_vector1 = np.append(feature_vector1, peak_fft_gyro)
+    feature_vector1 = np.append(feature_vector1, stdev_gyro)
+    
+    feature_names_c = np.concatenate((feature_names,feature_names1))
+    feature_vector_c = np.concatenate((feature_vector,feature_vector1))
+    return feature_names_c, feature_vector_c
